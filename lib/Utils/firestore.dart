@@ -25,4 +25,5 @@ class DataStore {
     );
     return userExists;
   }
+
 }

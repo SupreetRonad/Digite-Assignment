@@ -10,7 +10,6 @@ class Auth {
   }
 
   Future<void> signIn(String phone) async {
-    log(phone);
     await prefs!.setBool('signedIn', true);
     await prefs!.setString('phone', phone);
   }

@@ -3,7 +3,7 @@ import 'package:digite_assign/Authentication/detailsPage.dart';
 import 'package:digite_assign/Shared/customWidgets.dart';
 import 'package:digite_assign/Utils/firestore.dart';
 import 'package:digite_assign/Utils/sharedPrefs.dart';
-import 'package:digite_assign/homeScreen.dart';
+import 'package:digite_assign/Users/homeScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

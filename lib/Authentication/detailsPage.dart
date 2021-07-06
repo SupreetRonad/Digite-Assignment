@@ -1,10 +1,11 @@
 import 'dart:developer';
 import 'dart:math' as math;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digite_assign/Authentication/authScreen.dart';
 import 'package:digite_assign/Shared/customWidgets.dart';
 import 'package:digite_assign/Utils/firestore.dart';
 import 'package:digite_assign/Utils/sharedPrefs.dart';
-import 'package:digite_assign/homeScreen.dart';
+import 'package:digite_assign/Users/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,9 +20,10 @@ class DetailsPage extends StatefulWidget {
 }
 
 class _DetailsPageState extends State<DetailsPage> {
-  bool signingIn = true;
+  bool signingIn = true, storing = false;
   final Auth _auth = Auth();
   final DataStore _dStore = DataStore();
+  TextEditingController name = TextEditingController();
 
   void signIn() async {
     await _auth.init();
@@ -48,7 +50,29 @@ class _DetailsPageState extends State<DetailsPage> {
     );
   }
 
-  void storeInfo() {}
+  void saveInfo() async {
+    if (name.text.isNotEmpty) {
+      setState(() {
+        storing = true;
+      });
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.phone)
+          .set({
+        'phone': widget.phone,
+        'name': name.text,
+        'isExpert': false,
+      });
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (builder) => const HomeScreen(),
+        ),
+      );
+    } else {
+      showMsg(context, 'Please enter your name!', Colors.red);
+    }
+  }
 
   @override
   void initState() {
@@ -58,7 +82,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return signingIn
+    return (signingIn || storing)
         ? const Loading()
         : WillPopScope(
             onWillPop: () {
@@ -112,7 +136,8 @@ class _DetailsPageState extends State<DetailsPage> {
                       padding: const EdgeInsets.all(15.0),
                       child: CustomField(
                         hint: 'Your name',
-                        onChanged: (val) {},
+                        onChanged: null,
+                        controller: name,
                       ),
                     ),
                   ],
@@ -124,10 +149,12 @@ class _DetailsPageState extends State<DetailsPage> {
 
   Widget signInButton() => ElevatedButton(
         style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.all(17),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15))),
-        onPressed: () {},
+          padding: const EdgeInsets.all(17),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+        onPressed: saveInfo,
         child: const Text('Save and Continue'),
       );
 }

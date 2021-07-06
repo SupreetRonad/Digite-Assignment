@@ -16,6 +16,7 @@ class CustomField extends StatelessWidget {
   final String? prefix;
   final int? maxLength;
   final TextInputType? keyboardType;
+  final TextEditingController? controller;
   const CustomField({
     Key? key,
     this.onChanged,
@@ -23,6 +24,7 @@ class CustomField extends StatelessWidget {
     this.prefix,
     this.keyboardType = TextInputType.text,
     this.maxLength,
+    this.controller,
   }) : super(key: key);
 
   @override
@@ -34,6 +36,7 @@ class CustomField extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextFormField(
+        controller: controller,
         maxLength: maxLength,
         keyboardType: keyboardType,
         decoration: InputDecoration(

@@ -17,7 +17,7 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   final Auth _auth = Auth();
-  late String phone;
+  late String phone = '';
   final DataStore store = DataStore();
   bool focused = false;
   final FocusNode _focus = FocusNode();

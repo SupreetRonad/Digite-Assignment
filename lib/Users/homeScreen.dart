@@ -1,7 +1,8 @@
+import 'package:digite_assign/Users/menu.dart';
 import 'package:flutter/material.dart';
 
-import 'Utils/firestore.dart';
-import 'Utils/sharedPrefs.dart';
+import '../Utils/firestore.dart';
+import '../Utils/sharedPrefs.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final Auth _auth = Auth();
   final DataStore _dStore = DataStore();
+
   void signOut() async {
     await _auth.init();
     await _dStore.init();
@@ -20,20 +22,25 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.pushReplacementNamed(context, 'authScreen');
   }
 
+  void menu() {
+    showDialog(
+      context: context,
+      builder: (builder) {
+        return Menu();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         elevation: 0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               'Ask an Expert',
-              style: TextStyle(
-                color: Colors.black,
-              ),
             ),
             Row(
               children: [
@@ -41,11 +48,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 10,
                 ),
                 IconButton(
-                  onPressed: signOut,
+                  onPressed: menu,
                   icon: Icon(
-                    Icons.exit_to_app_rounded,
+                    Icons.menu_rounded,
                     size: 30,
-                    color: Colors.black,
                   ),
                 ),
               ],
