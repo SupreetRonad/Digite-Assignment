@@ -1,77 +1,73 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:digite_assign/Authentication/authScreen.dart';
+import 'package:digite_assign/Authentication/detailsPage.dart';
+import 'package:digite_assign/Shared/customWidgets.dart';
+import 'package:digite_assign/Utils/firestore.dart';
+import 'package:digite_assign/Utils/sharedPrefs.dart';
+import 'package:digite_assign/homeScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-void main() {
+Auth _auth = Auth();
+DataStore store = DataStore();
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp();
+  await Firebase.initializeApp();
+
+  await _auth.init();
+  await store.init();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+  State<MyApp> createState() => _MyAppState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class _MyAppState extends State<MyApp> {
+  late bool signedIn = false, hasInfo = false;
 
-  final String title;
+  bool loading = true;
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() async {
-    await FirebaseFirestore.instance
-        .collection('collectionPath')
-        .doc('Test')
-        .set({'Test': '_counter'});
+  void checkSignIn() async {
+    signedIn = (await _auth.checkSignIn())!;
+    if (signedIn) {
+      String? phone = await _auth.getPhone();
+      hasInfo = await store.checkInfo(phone);
+    }
     setState(() {
-      _counter++;
+      loading = false;
     });
   }
 
   @override
+  void initState() {
+    checkSignIn();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      routes: {
+        'authScreen': (context) => AuthScreen(),
+        'detailsPage': (context) => DetailsPage(),
+        'homeScreen': (context) => const HomeScreen(),
+      },
+      home: loading
+          ? const Loading()
+          : hasInfo
+              ? const HomeScreen()
+              : AuthScreen(),
     );
   }
 }
