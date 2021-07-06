@@ -1,8 +1,11 @@
+import 'package:digite_assign/Shared/customWidgets.dart';
 import 'package:digite_assign/Users/menu.dart';
+import 'package:digite_assign/Users/streamMessages.dart';
 import 'package:flutter/material.dart';
 
 import '../Utils/firestore.dart';
 import '../Utils/sharedPrefs.dart';
+import 'message.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,6 +17,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final Auth _auth = Auth();
   final DataStore _dStore = DataStore();
+
+  String phone = '';
 
   void signOut() async {
     await _auth.init();
@@ -60,7 +65,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: Column(
-        children: [],
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          StreamMsg(),
+          Message(),
+        ],
       ),
     );
   }
