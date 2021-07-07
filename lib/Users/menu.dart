@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digite_assign/Authentication/authScreen.dart';
 import 'package:digite_assign/Shared/customWidgets.dart';
 import 'package:digite_assign/Utils/firestore.dart';
+import 'package:digite_assign/Utils/infoProvider.dart';
 import 'package:digite_assign/Utils/sharedPrefs.dart';
 import 'package:flutter/material.dart';
 
@@ -19,28 +20,9 @@ class _MenuState extends State<Menu> {
 
   String? phone = '', name = '';
 
-  void getInfo() async {
+  void signOut() async {
     await _auth.init();
-    await _dStore.init();
-
-    phone = await _auth.getPhone();
-
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(phone)
-        .get()
-        .then((value) {
-      if (value.exists) {
-        name = value['name'];
-        isExpert = value['isExpert'];
-        retrieving = false;
-      }
-    });
-    setState(() {});
-  }
-
-  void signOut() {
-    _auth.signOut();
+    await _auth.signOut();
     Navigator.pop(context);
     Navigator.pushReplacement(
       context,
@@ -52,7 +34,6 @@ class _MenuState extends State<Menu> {
 
   @override
   void initState() {
-    getInfo();
     super.initState();
   }
 
@@ -64,38 +45,36 @@ class _MenuState extends State<Menu> {
       ),
       child: Container(
         height: 170,
-        padding: EdgeInsets.all(25),
-        child: retrieving
-            ? Loading()
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      Text(
-                        name!,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        phone!,
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 13,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    ],
+        padding: const EdgeInsets.all(25),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                Text(
+                  InfoProvider.name,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
-                  signOutButton()
-                ],
-              ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  InfoProvider.phone,
+                  style: const TextStyle(
+                    color: Colors.black54,
+                    fontSize: 13,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
+            signOutButton()
+          ],
+        ),
       ),
     );
   }

@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digite_assign/Utils/sharedPrefs.dart';
 
+import 'infoProvider.dart';
+
 class DataStore {
   late final Auth _auth;
   late final FirebaseFirestore dbRef;
@@ -19,11 +21,11 @@ class DataStore {
       (value) {
         if (value.exists) {
           userExists = true;
-        } else {
+          InfoProvider.isExpert = value['isExpert'];
+          InfoProvider.name = value['name'];
         }
       },
     );
     return userExists;
   }
-
 }

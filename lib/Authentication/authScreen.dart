@@ -135,8 +135,8 @@ class _AuthScreenState extends State<AuthScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 3),
-            padding: EdgeInsets.all(5),
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
+            padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
               color: Colors.grey[200],
               borderRadius: BorderRadius.circular(17),
@@ -153,7 +153,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       focusNode: _focus,
                       maxLength: 10,
                       keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: '(12345) - 67890',
                         hintStyle: TextStyle(
                           color: Colors.black26,
@@ -166,7 +166,6 @@ class _AuthScreenState extends State<AuthScreen> {
                         setState(() {
                           phone = val;
                         });
-                        return null;
                       },
                     ),
                   ),
@@ -175,13 +174,13 @@ class _AuthScreenState extends State<AuthScreen> {
                   style: ElevatedButton.styleFrom(
                     primary: Colors.blue,
                     elevation: 5,
-                    padding: EdgeInsets.all(15),
+                    padding: const EdgeInsets.all(15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
                   onPressed: _signIn,
-                  child: Icon(
+                  child: const Icon(
                     Icons.arrow_forward_rounded,
                     color: Colors.white,
                   ),

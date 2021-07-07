@@ -2,8 +2,10 @@ import 'dart:developer';
 import 'dart:math' as math;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digite_assign/Authentication/authScreen.dart';
+import 'package:digite_assign/Expert/allChats.dart';
 import 'package:digite_assign/Shared/customWidgets.dart';
 import 'package:digite_assign/Utils/firestore.dart';
+import 'package:digite_assign/Utils/infoProvider.dart';
 import 'package:digite_assign/Utils/sharedPrefs.dart';
 import 'package:digite_assign/Users/homeScreen.dart';
 import 'package:flutter/material.dart';
@@ -29,10 +31,20 @@ class _DetailsPageState extends State<DetailsPage> {
     await _auth.init();
     await _dStore.init();
     await _auth.signIn(widget.phone);
-    bool userExists = await _dStore.checkInfo(await _auth.getPhone());
+    bool userExists = await _dStore.checkInfo(InfoProvider.phone);
+    bool isExpert = InfoProvider.isExpert;
 
     if (userExists) {
-      Navigator.pushReplacementNamed(context, 'homeScreen');
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (builder) => isExpert
+              ? const AllChats()
+              : const HomeScreen(
+                  head: Text('Ask an Expert'),
+                ),
+        ),
+      );
     } else {
       setState(() {
         signingIn = false;
@@ -66,7 +78,9 @@ class _DetailsPageState extends State<DetailsPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (builder) => const HomeScreen(),
+          builder: (builder) => const HomeScreen(
+            head: Text('Ask an Expert'),
+          ),
         ),
       );
     } else {

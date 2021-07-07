@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:digite_assign/Shared/customWidgets.dart';
 import 'package:digite_assign/Users/menu.dart';
 import 'package:digite_assign/Users/streamMessages.dart';
+import 'package:digite_assign/Utils/infoProvider.dart';
 import 'package:flutter/material.dart';
 
 import '../Utils/firestore.dart';
@@ -8,7 +11,11 @@ import '../Utils/sharedPrefs.dart';
 import 'message.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final Widget head;
+  const HomeScreen({
+    Key? key,
+    required this.head,
+  }) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -18,7 +25,9 @@ class _HomeScreenState extends State<HomeScreen> {
   final Auth _auth = Auth();
   final DataStore _dStore = DataStore();
 
-  String phone = '';
+  bool retrieving = true;
+
+  String? phone = '';
 
   void signOut() async {
     await _auth.init();
@@ -31,30 +40,42 @@ class _HomeScreenState extends State<HomeScreen> {
     showDialog(
       context: context,
       builder: (builder) {
-        return Menu();
+        return const Menu();
       },
     );
+  }
+
+  void getInfo() async {
+    phone = InfoProvider.phone;
+    setState(() {
+      retrieving = false;
+    });
+  }
+
+  @override
+  void initState() {
+    getInfo();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue,
       appBar: AppBar(
         elevation: 0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Ask an Expert',
-            ),
+            widget.head,
             Row(
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 IconButton(
                   onPressed: menu,
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.menu_rounded,
                     size: 30,
                   ),
@@ -64,13 +85,21 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          StreamMsg(),
-          Message(),
-        ],
-      ),
+      body: retrieving
+          ? const Loading()
+          : Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  const StreamMsg(),
+                  const Message(),
+                ],
+              ),
+            ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:digite_assign/Authentication/authScreen.dart';
 import 'package:digite_assign/Authentication/detailsPage.dart';
+import 'package:digite_assign/Expert/allChats.dart';
 import 'package:digite_assign/Shared/customWidgets.dart';
 import 'package:digite_assign/Utils/firestore.dart';
 import 'package:digite_assign/Utils/sharedPrefs.dart';
@@ -7,6 +8,8 @@ import 'package:digite_assign/Users/homeScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'Utils/infoProvider.dart';
 
 Auth _auth = Auth();
 DataStore store = DataStore();
@@ -17,6 +20,7 @@ void main() async {
 
   await _auth.init();
   await store.init();
+  
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const MyApp());
 }
@@ -29,15 +33,16 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late bool signedIn = false, hasInfo = false;
+  late bool signedIn = false, hasInfo = false, isExpert = false;
 
   bool loading = true;
 
   void checkSignIn() async {
     signedIn = (await _auth.checkSignIn())!;
     if (signedIn) {
-      String? phone = await _auth.getPhone();
+      String? phone = InfoProvider.phone;
       hasInfo = await store.checkInfo(phone);
+      isExpert = InfoProvider.isExpert;
     }
     setState(() {
       loading = false;
@@ -58,15 +63,14 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      routes: {
-        'authScreen': (context) => AuthScreen(),
-        'detailsPage': (context) => DetailsPage(),
-        'homeScreen': (context) => const HomeScreen(),
-      },
       home: loading
           ? const Loading()
-          : hasInfo
-              ? const HomeScreen()
+          : signedIn
+              ? isExpert
+                  ? const AllChats()
+                  : const HomeScreen(
+                      head: Text('Ask an Expert'),
+                    )
               : AuthScreen(),
     );
   }
