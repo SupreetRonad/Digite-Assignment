@@ -1,13 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class DisplayMsg extends StatelessWidget {
   final bool fromMe;
   final String msg;
+  final String img;
   final Timestamp time;
-  const DisplayMsg(
-      {Key? key, required this.fromMe, required this.msg, required this.time})
-      : super(key: key);
+  const DisplayMsg({
+    Key? key,
+    required this.fromMe,
+    required this.msg,
+    required this.time,
+    required this.img,
+  }) : super(key: key);
 
   String formatTime() {
     DateTime date = time.toDate();
@@ -39,7 +45,8 @@ class DisplayMsg extends StatelessWidget {
             crossAxisAlignment:
                 fromMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
             children: [
-              Text(msg),
+              img.isNotEmpty ? displayImage() : const SizedBox(),
+              msg.isNotEmpty ? Text(msg) : const SizedBox(),
               const SizedBox(
                 height: 5,
               ),
@@ -51,6 +58,29 @@ class DisplayMsg extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget displayImage() {
+    return Stack(
+      children: [
+        const Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Center(
+            child: SpinKitFadingCircle(
+              color: Colors.black54,
+              size: 20,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 5),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(5),
+            child: Image.network(img),
           ),
         ),
       ],

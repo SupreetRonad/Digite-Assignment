@@ -38,6 +38,8 @@ class CustomField extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextFormField(
+        minLines: 1,
+        maxLines: 4,
         focusNode: focus,
         controller: controller,
         maxLength: maxLength,

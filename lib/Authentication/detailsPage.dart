@@ -75,6 +75,7 @@ class _DetailsPageState extends State<DetailsPage> {
         'name': name.text,
         'isExpert': false,
       });
+      await _dStore.checkInfo(InfoProvider.phone);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(

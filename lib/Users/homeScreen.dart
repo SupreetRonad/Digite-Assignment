@@ -69,8 +69,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(10),
+            topLeft: Radius.circular(10),
+          ),
           color: Colors.white,
         ),
         child: Column(

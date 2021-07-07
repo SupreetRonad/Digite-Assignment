@@ -75,6 +75,7 @@ class _StreamMsgState extends State<StreamMsg> {
                   fromMe: fromMe,
                   msg: data['msg'],
                   time: data['time'],
+                  img : data['img']
                 );
               },
             );

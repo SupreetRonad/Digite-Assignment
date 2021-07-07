@@ -46,7 +46,8 @@ dependencies:
   #OTHER
   google_fonts: ^2.1.0
   flutter_spinkit: ^5.0.0
-  shared_preferences: ^2.0.6
+  shared_preferences: ^2.0.6  
+  image_picker: ^0.8.0+3
 
 dev_dependencies:
   flutter_test:

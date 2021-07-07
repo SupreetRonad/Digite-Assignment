@@ -5,6 +5,7 @@ import 'package:digite_assign/Shared/customWidgets.dart';
 import 'package:digite_assign/Utils/firestore.dart';
 import 'package:digite_assign/Utils/sharedPrefs.dart';
 import 'package:digite_assign/Users/homeScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +23,7 @@ void main() async {
   await store.init();
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await FirebaseAuth.instance.signInAnonymously();
   runApp(const MyApp());
 }
 
@@ -70,7 +72,6 @@ class _MyAppState extends State<MyApp> {
                   ? const AllChats()
                   : const HomeScreen(
                       head: Text('Ask an Expert'),
-                      
                     )
               : AuthScreen(),
     );
