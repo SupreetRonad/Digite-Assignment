@@ -40,8 +40,20 @@ class _DetailsPageState extends State<DetailsPage> {
         MaterialPageRoute(
           builder: (builder) => isExpert
               ? const AllChats()
-              : const HomeScreen(
-                  head: Text('Ask an Expert'),
+              : HomeScreen(
+                  head: Row(
+                    children: [
+                      const Icon(
+                        Icons.how_to_reg_rounded,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text('Ask an Expert'),
+                    ],
+                  ),
                 ),
         ),
       );
@@ -79,8 +91,18 @@ class _DetailsPageState extends State<DetailsPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (builder) => const HomeScreen(
-            head: Text('Ask an Expert'),
+          builder: (builder) => HomeScreen(
+            head: Row(
+              children: [
+                ClipRect(
+                  child: Image.asset(
+                    'assets/images/student.png',
+                    height: 50,
+                  ),
+                ),
+                Text('Ask an Expert'),
+              ],
+            ),
           ),
         ),
       );
@@ -136,8 +158,8 @@ class _DetailsPageState extends State<DetailsPage> {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 30,
+                    const SizedBox(
+                      height: 10,
                     ),
                     Text(
                       'Tell us about yourself...',
@@ -155,6 +177,14 @@ class _DetailsPageState extends State<DetailsPage> {
                         controller: name,
                       ),
                     ),
+                    Expanded(
+                      child: Image.asset(
+                        'assets/images/tellus.png',
+                      ),
+                    ),
+                    SizedBox(
+                      height: 60,
+                    )
                   ],
                 ),
               ),

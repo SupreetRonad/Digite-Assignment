@@ -70,8 +70,20 @@ class _MyAppState extends State<MyApp> {
           : signedIn
               ? isExpert
                   ? const AllChats()
-                  : const HomeScreen(
-                      head: Text('Ask an Expert'),
+                  : HomeScreen(
+                      head: Row(
+                        children: [
+                          const Icon(
+                            Icons.how_to_reg_rounded,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          const Text('Ask an Expert'),
+                        ],
+                      ),
                     )
               : AuthScreen(),
     );

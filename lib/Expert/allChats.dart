@@ -36,14 +36,17 @@ class _AllChatsState extends State<AllChats> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         elevation: 0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text(
               'All queries',
+              style: TextStyle(
+                color: Colors.black,
+              ),
             ),
             Row(
               children: [
@@ -55,6 +58,7 @@ class _AllChatsState extends State<AllChats> {
                   icon: const Icon(
                     Icons.menu_rounded,
                     size: 30,
+                    color: Colors.black,
                   ),
                 ),
               ],
@@ -90,69 +94,124 @@ class _AllChatsState extends State<AllChats> {
   }
 
   Widget chatCard(data) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (builder) => HomeScreen(
-              head: chatHead(data['name'] ?? 'Name', data['student']),
-              expert: true,
-              phone: data['student'],
-              name: data['name'],
-            ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.only(
+            right: 5,
           ),
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: Colors.white,
+          primary: Colors.white,
+          elevation: 5,
+          shadowColor: Colors.white38,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(
-                  data['name'] ?? 'Name',
-                  style: const TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
-                  ),
-                ),
-                const Spacer(),
-                Text(
-                  formatTime(data['time']),
-                  style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.black45,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            data['img'].isNotEmpty
-                ? imageAttach
-                : Text(
-                    data['msg'],
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.black54,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (builder) => HomeScreen(
+                head: Row(
+                  children: [
+                    backButton(),
+                    const SizedBox(
+                      width: 5,
                     ),
-                  ),
-          ],
+                    chatHead(data['name'] ?? 'Name', data['student']),
+                  ],
+                ),
+                expert: true,
+                phone: data['student'],
+                name: data['name'],
+              ),
+            ),
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Row(
+            children: [
+              Image.asset(
+                'assets/images/student.png',
+                height: 50,
+                fit: BoxFit.cover,
+              ),
+              SizedBox(width: 10,),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Text(
+                          data['name'] ?? 'Name',
+                          style: const TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
+                          ),
+                        ),
+                        Text(
+                          formatTime(data['time']),
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.black45,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    data['img'].isNotEmpty
+                        ? imageAttach
+                        : Text(
+                            data['msg'],
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black54,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+
+  Widget backButton() => TextButton(
+        onPressed: () => Navigator.pop(context),
+        style: TextButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(100),
+          ),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              Icons.arrow_back_rounded,
+              color: Colors.white,
+            ),
+            Image.asset(
+              'assets/images/student.png',
+              height: 50,
+              fit: BoxFit.cover,
+            ),
+          ],
+        ),
+      );
 
   Widget chatHead(String name, String phone) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,

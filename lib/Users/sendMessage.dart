@@ -204,43 +204,49 @@ class _MessageState extends State<Message> {
   Widget displayImage() {
     if (_image != null) {
       return Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: Colors.grey[100],
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         height: 80,
-        child: Row(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.file(
-                _image!,
-                fit: BoxFit.cover,
-              ),
-            ),
-            const Spacer(),
-            uploading
-                ? const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: SpinKitFadingCircle(
-                      color: Colors.black54,
-                      size: 20,
-                    ),
-                  )
-                : IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _image = null;
-                      });
-                    },
-                    icon: Icon(
-                      Icons.close,
-                      color: Colors.black54,
-                    ),
+        child: Card(
+          color: Colors.grey[100],
+          elevation: 5,
+          shadowColor: Colors.grey.withOpacity(0.3),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.file(
+                    _image!,
+                    fit: BoxFit.cover,
                   ),
-          ],
+                ),
+                const Spacer(),
+                uploading
+                    ? const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: SpinKitFadingCircle(
+                          color: Colors.black54,
+                          size: 20,
+                        ),
+                      )
+                    : IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _image = null;
+                          });
+                        },
+                        icon: Icon(
+                          Icons.close,
+                          color: Colors.black54,
+                        ),
+                      ),
+              ],
+            ),
+          ),
         ),
       );
     }

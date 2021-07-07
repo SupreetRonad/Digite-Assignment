@@ -41,53 +41,76 @@ class _MenuState extends State<Menu> {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(13),
       ),
-      child: Container(
-        height: 170,
-        padding: const EdgeInsets.all(25),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
+      child: Stack(
+        children: [
+          Container(
+            height: 230,
+            padding: const EdgeInsets.all(10),
+            child: Column(
               children: [
-                Text(
-                  InfoProvider.name,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Image.asset(
+                  'assets/images/${InfoProvider.isExpert ? 'experticon' : 'student'}.png',
+                  height: 80,
+                  fit: BoxFit.cover,
                 ),
                 const SizedBox(
-                  height: 5,
+                  height: 10,
                 ),
-                Text(
-                  InfoProvider.phone,
-                  style: const TextStyle(
-                    color: Colors.black54,
-                    fontSize: 13,
-                    fontWeight: FontWeight.normal,
-                  ),
+                Column(
+                  children: [
+                    Text(
+                      InfoProvider.name,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      InfoProvider.phone,
+                      style: const TextStyle(
+                        color: Colors.black54,
+                        fontSize: 13,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ],
                 ),
+                const Spacer(),
+                signOutButton()
               ],
             ),
-            signOutButton()
-          ],
-        ),
+          ),
+          Positioned(
+            right: 0,
+            child: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: Icon(
+                Icons.close,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget signOutButton() => ElevatedButton(
         style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.all(17),
+          padding: const EdgeInsets.all(15),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(10),
           ),
           primary: Colors.red,
         ),
         onPressed: signOut,
-        child: const Text('Log Out'),
+        child: const Center(
+          child: Text('Log Out'),
+        ),
       );
 }

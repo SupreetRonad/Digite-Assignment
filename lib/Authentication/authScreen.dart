@@ -94,12 +94,19 @@ class _AuthScreenState extends State<AuthScreen> {
                 color: Colors.black54,
               ),
             ),
+            SizedBox(
+              height: 10,
+            ),
+            Image.asset(
+              'assets/images/phone.png',
+              width: MediaQuery.of(context).size.width * 0.7,
+            ),
           ],
         ),
       );
 
   Widget _headerText(double width) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Hey, welcome to',
@@ -117,7 +124,11 @@ class _AuthScreenState extends State<AuthScreen> {
             ),
           ),
           SizedBox(
-            height: 40,
+            height: 20,
+          ),
+          Image.asset('assets/images/expert.png'),
+          SizedBox(
+            height: 20,
           ),
           Text(
             'An app to connect to the Experts',
