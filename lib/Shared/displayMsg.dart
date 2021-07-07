@@ -29,20 +29,23 @@ class DisplayMsg extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: fromMe ? Colors.grey[200] : Colors.blue[300],
+            color: fromMe ? Colors.grey[200] : Colors.blue[100],
             borderRadius: BorderRadius.circular(10),
           ),
           constraints: BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width * 0.75,
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment:
+                fromMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
             children: [
               Text(msg),
-              const SizedBox(height: 5,),
+              const SizedBox(
+                height: 5,
+              ),
               Text(
                 formatTime(),
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black54,
                   fontSize: 12,
                 ),

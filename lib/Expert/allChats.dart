@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digite_assign/Shared/customWidgets.dart';
+import 'package:digite_assign/Users/homeScreen.dart';
 import 'package:digite_assign/Users/menu.dart';
 import 'package:flutter/material.dart';
 
@@ -68,7 +69,7 @@ class _AllChatsState extends State<AllChats> {
             .snapshots(),
         builder: (builder, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Loading();
+            return const Loading();
           }
           return chatList(snapshot);
         },
@@ -83,14 +84,26 @@ class _AllChatsState extends State<AllChats> {
       physics: const BouncingScrollPhysics(),
       itemCount: list.length,
       itemBuilder: (context, index) {
-        return chatHead(list[index].data());
+        return chatCard(list[index].data());
       },
     );
   }
 
-  Widget chatHead(data) {
+  Widget chatCard(data) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (builder) => HomeScreen(
+              head: chatHead(data['name'] ?? 'Name', data['student']),
+              expert: true,
+              phone: data['student'],
+              name: data['name'],
+            ),
+          ),
+        );
+      },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         padding: const EdgeInsets.all(15),
@@ -104,7 +117,7 @@ class _AllChatsState extends State<AllChats> {
             Row(
               children: [
                 Text(
-                  data['name'],
+                  data['name'] ?? 'Name',
                   style: const TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
@@ -140,6 +153,30 @@ class _AllChatsState extends State<AllChats> {
       ),
     );
   }
+
+  Widget chatHead(String name, String phone) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            name,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(
+            height: 3,
+          ),
+          Text(
+            phone,
+            style: TextStyle(
+              color: Colors.white54,
+              fontWeight: FontWeight.normal,
+              fontSize: 12,
+            ),
+          ),
+        ],
+      );
 
   final Widget imageAttach = Row(
     children: [

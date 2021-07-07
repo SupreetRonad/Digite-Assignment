@@ -6,7 +6,15 @@ import 'package:digite_assign/Utils/sharedPrefs.dart';
 import 'package:flutter/material.dart';
 
 class Message extends StatefulWidget {
-  const Message({Key? key}) : super(key: key);
+  final bool fromExpert;
+  final String? phone;
+  final String? name;
+  const Message({
+    Key? key,
+    this.fromExpert = false,
+    this.phone,
+    this.name,
+  }) : super(key: key);
 
   @override
   _MessageState createState() => _MessageState();
@@ -19,14 +27,14 @@ class _MessageState extends State<Message> {
   FocusNode node = FocusNode();
 
   Future<void> sendMsg() async {
-    String? phone = InfoProvider.phone;
+    String? phone = widget.fromExpert ? widget.phone : InfoProvider.phone;
+    // await _dStore.checkInfo(phone);
 
-    await _dStore.checkInfo(phone);
-    String name = InfoProvider.name;
+    String? name =widget.fromExpert ? widget.name : InfoProvider.name;
 
     if (message.text.isNotEmpty) {
       node.unfocus();
-      String? phone = InfoProvider.phone;
+      phone = widget.fromExpert ? widget.phone : InfoProvider.phone;
       int stamp = DateTime.now().microsecondsSinceEpoch;
 
       var content = {
@@ -34,8 +42,9 @@ class _MessageState extends State<Message> {
         'stamp': stamp,
         'img': '',
         'time': DateTime.now(),
-        'from': phone,
-        'name': name,
+        'from': widget.fromExpert ? InfoProvider.phone : phone,
+        'name': widget.fromExpert ? widget.name : name,
+        'student': phone,
       };
 
       FirebaseFirestore.instance

@@ -20,7 +20,7 @@ void main() async {
 
   await _auth.init();
   await store.init();
-  
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const MyApp());
 }
@@ -70,6 +70,7 @@ class _MyAppState extends State<MyApp> {
                   ? const AllChats()
                   : const HomeScreen(
                       head: Text('Ask an Expert'),
+                      
                     )
               : AuthScreen(),
     );
