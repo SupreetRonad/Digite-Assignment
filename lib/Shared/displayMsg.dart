@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:pinch_zoom_image_last/pinch_zoom_image_last.dart';
 
 class DisplayMsg extends StatelessWidget {
   final bool fromMe;
@@ -80,7 +81,17 @@ class DisplayMsg extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 5),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(5),
-            child: Image.network(img),
+            child: PinchZoomImage(
+              image: Image.network(img),
+              zoomedBackgroundColor: Colors.black38,
+              hideStatusBarWhileZooming: true,
+              onZoomStart: () {
+                print('Zoom started');
+              },
+              onZoomEnd: () {
+                print('Zoom finished');
+              },
+            ),
           ),
         ),
       ],

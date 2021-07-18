@@ -135,10 +135,10 @@ class _AllChatsState extends State<AllChats> {
             children: [
               Image.asset(
                 'assets/images/student.png',
-                height: 50,
+                height: 60,
                 fit: BoxFit.cover,
               ),
-              SizedBox(width: 10,),
+              const SizedBox(width: 10,),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
